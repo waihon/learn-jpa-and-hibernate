@@ -47,4 +47,15 @@ public class CourseJdbcRepository {
         return springJdbcTemplate.queryForObject(SELECT_QUERY,
                 new BeanPropertyRowMapper<>(Course.class), courseId);
     }
+
+    public void seedData() {
+        insert(new Course(1, "Learn AWS JDBC Now!", "in28minutes"));
+        insert(new Course(2, "Learn Azure JDBC Now!", "in28minutes"));
+        insert(new Course(3, "Learn DevOps JDBC Now!", "in28minutes"));
+
+        deleteById(2);
+
+        System.out.println(findById(1));
+        System.out.println(findById(3));
+    }
 }
