@@ -2,13 +2,13 @@ package com.waihon.learnjpaandhibernate.course.jdbc;
 
 import com.waihon.learnjpaandhibernate.course.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CourseJdbcRepository {
 
-    @Autowired
     private JdbcTemplate springJdbcTemplate;
 
     private static String INSERT_QUERY =
@@ -23,11 +23,28 @@ public class CourseJdbcRepository {
             where id = ?;
             """;
 
+    private static String SELECT_QUERY =
+            """
+            select * from course
+            where id = ?;
+            """;
+
+    @Autowired
+    public CourseJdbcRepository(JdbcTemplate springJdbcTemplate) {
+        this.springJdbcTemplate = springJdbcTemplate;
+    }
+
     public void insert(Course course) {
         springJdbcTemplate.update(INSERT_QUERY, course.getId(), course.getName(), course.getAuthor());
     }
 
-    public void deleteById(int courseId) {
+    public void deleteById(long courseId) {
         springJdbcTemplate.update(DELETE_QUERY, courseId);
+    }
+
+    public Course findById(long courseId) {
+        // ResultSet -> Bean => Row Mapper =>
+        return springJdbcTemplate.queryForObject(SELECT_QUERY,
+                new BeanPropertyRowMapper<>(Course.class), courseId);
     }
 }

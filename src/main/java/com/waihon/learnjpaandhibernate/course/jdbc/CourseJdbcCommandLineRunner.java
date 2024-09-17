@@ -9,14 +9,17 @@ import org.springframework.stereotype.Component;
 public class CourseJdbcCommandLineRunner implements CommandLineRunner {
 
     @Autowired
-    private CourseJdbcRepository courseJdbcRepository;
+    private CourseJdbcRepository repository;
 
     @Override
     public void run(String... args) throws Exception {
-        courseJdbcRepository.insert(new Course(1, "Learn AWS Now!", "in28minutes"));
-        courseJdbcRepository.insert(new Course(2, "Learn Azure Now!", "in28minutes"));
-        courseJdbcRepository.insert(new Course(3, "Learn DevOps Now!", "in28minutes"));
+        repository.insert(new Course(1, "Learn AWS Now!", "in28minutes"));
+        repository.insert(new Course(2, "Learn Azure Now!", "in28minutes"));
+        repository.insert(new Course(3, "Learn DevOps Now!", "in28minutes"));
 
-        courseJdbcRepository.deleteById(2);
+        repository.deleteById(2);
+
+        System.out.println(repository.findById(1));
+        System.out.println(repository.findById(3));
     }
 }
